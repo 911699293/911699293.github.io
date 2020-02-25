@@ -4,15 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="我的第一篇博客文章, Lucas的博客">
-    <meta name="description" content="我的第一篇博客文章内容
-
-第二章内容
-
-参考文献内容
-
-www.lucasyuan.top
-">
+    <meta name="keywords" content="DDA直线算法, Lucas的博客">
+    <meta name="description" content="DDA算法生成直线——C#
+一、基础知识&amp;nbsp;&amp;nbsp;在计算机中，直线的显示并不是连续的，而是离散的点，这是由光栅化的本之决定的。&amp;nbsp;&amp;nbsp;我们可以把屏幕理解为阴极射线管光栅显示器，这个显示器是由离散可发光的有线区域">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +14,7 @@ www.lucasyuan.top
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>我的第一篇博客文章 | Lucas的博客</title>
+    <title>DDA直线算法 | Lucas的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -417,12 +411,12 @@ www.lucasyuan.top
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">我的第一篇博客文章</h1>
+                    <h1 class="description center-align post-title">DDA直线算法</h1>
                 </div>
             </div>
         </div>
@@ -551,7 +545,7 @@ www.lucasyuan.top
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-02-22
+                    2020-02-25
                 </div>
                 
 
@@ -568,13 +562,32 @@ www.lucasyuan.top
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="我的第一篇博客文章"><a href="#我的第一篇博客文章" class="headerlink" title="我的第一篇博客文章"></a>我的第一篇博客文章</h1><p>内容</p>
-<hr>
-<h2 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h2><p>内容</p>
-<hr>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>内容</p>
-<hr>
-<p><a href="http://www.lucasyuan.top" target="_blank" rel="noopener">www.lucasyuan.top</a></p>
+                <h1 id="DDA算法生成直线——C"><a href="#DDA算法生成直线——C" class="headerlink" title="DDA算法生成直线——C#"></a>DDA算法生成直线——C#</h1><hr>
+<h5 id="一、基础知识"><a href="#一、基础知识" class="headerlink" title="一、基础知识"></a>一、基础知识</h5><p>&nbsp;&nbsp;在计算机中，直线的显示并不是连续的，而是离散的点，这是由光栅化的本之决定的。<br>&nbsp;&nbsp;我们可以把屏幕理解为阴极射线管光栅显示器，这个显示器是由离散可发光的有线区域单元(像素)组成的矩阵。确定最佳逼近某直线的像素的过程通常叫做光栅化。对于水平线、垂直线以及45°线，选择哪些光栅元素是显而易见的，而对于其他方向的直线，像素的选择就很困难。如下图，对于中间的那幅图而言，我们不知道问号区域到底是上面填充颜色还是下面填充颜色：<br><img src="https://img-blog.csdnimg.cn/20181101132144797.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2tlbmV5cg==,size_16,color_FFFFFF,t_70" alt="avatar"></p>
+<h5 id="二、那么一个画线的算法需要满组哪些条件？"><a href="#二、那么一个画线的算法需要满组哪些条件？" class="headerlink" title="二、那么一个画线的算法需要满组哪些条件？"></a>二、那么一个画线的算法需要满组哪些条件？</h5><ul>
+<li>直线应该外观笔直，并且要有最精确的起点和终点</li>
+<li>直线的亮度应该保持不变，且与直线的长度和方向无关</li>
+<li>直线在生成的时候速度要快<h5 id="三、DDA算法——digital-differentialanalyzer，数字微分析法"><a href="#三、DDA算法——digital-differentialanalyzer，数字微分析法" class="headerlink" title="三、DDA算法——digital differentialanalyzer，数字微分析法"></a>三、DDA算法——digital differentialanalyzer，数字微分析法</h5><h6 id="1-直线DDA算法思想："><a href="#1-直线DDA算法思想：" class="headerlink" title="1.直线DDA算法思想："></a>1.直线DDA算法思想：</h6>&nbsp;&nbsp;其实质是选定x方向和y方向上增加量较大者作为步进方向，取该方向上的增量为一个像素单位，然后利用公式计算另一个方向的增量，吧每次计算出的(xi+1，yi+1)经过取整后送到显示器上输出，就会得到扫描转换之后的直线。<br>&nbsp;&nbsp;之所以取两个方向中较大者作为步进方向，是考虑着线段分布的像素应均匀。<br><img src="https://i.imgur.com/1l2PLwL.png" alt=""><h6 id="2-DDA算法的实现："><a href="#2-DDA算法的实现：" class="headerlink" title="2.DDA算法的实现："></a>2.DDA算法的实现：</h6></li>
+</ul>
+<ol>
+<li><p>已知直线的两端点的坐标：(x1,y1),(x2,y2)[此例中用随机函数生成两坐标]；</p>
+</li>
+<li><p>已知画线的颜色：color；</p>
+</li>
+<li><p>计算出两个方向的变化量：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">k=Math.Abs(x2 - x1) ;</span><br><span class="line">k=Math.Abs(y2 - y1) ;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>计算出两个方向最大变化量：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> k = Math.Abs(x2 - x1); </span><br><span class="line"> <span class="keyword">if</span> (Math.Abs(y2 - y1) &gt; k)</span><br><span class="line">    k = Math.Abs(y2 - y1);</span><br></pre></td></tr></table></figure></li>
+<li><p>计算两个方向的增量：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xincre = (<span class="keyword">float</span>)(x2 - x1) / (<span class="keyword">float</span>)(k);</span><br><span class="line"></span><br><span class="line">yincre = (<span class="keyword">float</span>)(y2 - y1) / (<span class="keyword">float</span>)(k);</span><br></pre></td></tr></table></figure></li>
+<li><p>设置初始像素坐标：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = x1;</span><br><span class="line">y = y1;</span><br></pre></td></tr></table></figure></li>
+<li><p>利用循环实现直线的绘制：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt;= k; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="comment">//使用的是位图的SetPixel方法</span></span><br><span class="line">   myBmp.SetPixel((<span class="keyword">int</span>)x, (<span class="keyword">int</span>)y, c);</span><br><span class="line">   x += xincre;</span><br><span class="line">   y += yincre;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="3-DDA算法的特点："><a href="#3-DDA算法的特点：" class="headerlink" title="3.DDA算法的特点："></a>3.DDA算法的特点：</h6><p>&nbsp;&nbsp;该算法简单，容易实现，但是由于在循环中设计实数型的运算，因此，生成直线的速度较慢。</p>
+</li>
+</ol>
 
             </div>
             <hr/>
@@ -600,7 +613,7 @@ www.lucasyuan.top
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://yoursite.com/2020/02/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">http://yoursite.com/2020/02/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/</a>
+                    <a href="http://yoursite.com/2020/02/25/DDA%E7%9B%B4%E7%BA%BF%E7%AE%97%E6%B3%95/">http://yoursite.com/2020/02/25/DDA%E7%9B%B4%E7%BA%BF%E7%AE%97%E6%B3%95/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -801,9 +814,10 @@ www.lucasyuan.top
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/02/25/DDA%E7%9B%B4%E7%BA%BF%E7%AE%97%E6%B3%95/">
                     <div class="card-image">
@@ -822,9 +836,9 @@ www.lucasyuan.top
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-25
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-25
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -833,6 +847,7 @@ www.lucasyuan.top
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -843,19 +858,26 @@ www.lucasyuan.top
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/22/hello-world/">
+                <a href="/2020/02/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="我的第一篇博客文章">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">我的第一篇博客文章</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+                            我的第一篇博客文章内容
+
+第二章内容
+
+参考文献内容
+
+www.lucasyuan.top
+
                         
                     </div>
                     <div class="publish-info">
